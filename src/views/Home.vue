@@ -57,7 +57,7 @@ export default {
         this.newProductDescription = "";
         this.newProductPrice = "";
         this.newProductImageUrl = "";
-      });
+      }).catch(error => console.log(error.response));
     }
   }
 };
