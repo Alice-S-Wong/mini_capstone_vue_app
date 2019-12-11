@@ -1,9 +1,13 @@
 <template>
   <div class="home">
     <h1>{{ message }}</h1>
-    <p>{{ firstProduct }}</p>
-    <p>{{ secondProduct }}</p>
-    <p>{{ thirdProduct }}</p>
+    <div v-for="product in products">
+      <p>{{ product.name }}</p>
+      <p>Price: {{ product.price }}</p>
+      <p>{{ product.description }}</p>
+      <img :src="product.image_url">
+      <hr>
+    </div>
   </div>
 </template>
 
@@ -11,16 +15,21 @@
 </style>
 
 <script>
+import axios from "axios";
+
 export default {
   data: function() {
     return {
       message: "Welcome to Vue.js!",
-      firstProduct: "Bag of Bones",
-      secondProduct: "Humorous Humerus",
-      thirdProduct: "Laughing Skull"
+      products: []
     };
   },
-  created: function() {},
+  created: function() {
+    axios.get("/api/products").then(response => {
+      console.log(response.data);
+      this.products = response.data;
+    });
+  },
   methods: {}
 };
 </script>
