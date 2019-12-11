@@ -1,6 +1,11 @@
 <template>
   <div class="home">
     <h1>{{ message }}</h1>
+    <h2>Create New Product</h2>
+    <p>Name:<input type="text" v-model="newProductName"></p> 
+    <p>Description:<input type="text" v-model="newProductDescription"></p>
+    <p>Price:<input type="text" v-model="newProductPrice"></p>
+    <p>Image Url:<input type="text" v-model="newProductImageUrl"></p>
     <button v-on:click="addProduct()">Add New Product</button>
     <div v-for="product in products">
       <p>{{ product.name }}</p>
@@ -22,7 +27,11 @@ export default {
   data: function() {
     return {
       message: "Welcome to Vue.js!",
-      products: []
+      products: [],
+      newProductName: "",
+      newProductDescription: "",
+      newProductPrice: "",
+      newProductImageUrl: ""
     };
   },
   created: function() {
@@ -35,13 +44,19 @@ export default {
     addProduct: function() {
       console.log('adding new product');
       var params = {
-        name: "Rocket Artillery",
-        description: "Artillery that shoots rockets. It's actually rocket science this time! Unlike flamethrowers, this one isn't meant for kids.",
-        price: 5100000,
-        image_url: "https://upload.wikimedia.org/wikipedia/commons/8/83/HIMARS_-_missile_launched.jpg"
+        name: this.newProductName,
+        description: this.newProductDescription,
+        price: this.newProductPrice,
+        image_url: this.newProductImageUrl
       };
+      console.log(params);
       axios.post("/api/products", params).then(response => {
         console.log(response.data);
+        this.products.push(response.data);
+        this.newProductName = "";
+        this.newProductDescription = "";
+        this.newProductPrice = "";
+        this.newProductImageUrl = "";
       });
     }
   }
