@@ -10,8 +10,12 @@
     <div v-for="product in products">
       <p>{{ product.name }}</p>
       <p>Price: ${{ product.price }}</p>
-      <p>{{ product.description }}</p>
       <img v-bind:src="product.image_url" width="300px" v-bind:alt="product.name">
+      <br>
+      <button v-on:click="toggleInfo(product)">See more info</button>
+      <div v-if="currentProduct === product">
+        <p>{{ product.description }}</p>
+      </div>
       <hr>
     </div>
   </div>
@@ -31,7 +35,8 @@ export default {
       newProductName: "",
       newProductDescription: "",
       newProductPrice: "",
-      newProductImageUrl: ""
+      newProductImageUrl: "",
+      currentProduct: {}
     };
   },
   created: function() {
@@ -58,6 +63,10 @@ export default {
         this.newProductPrice = "";
         this.newProductImageUrl = "";
       }).catch(error => console.log(error.response));
+    },
+    toggleInfo: function(theProduct) {
+      console.log(theProduct);
+      this.currentProduct = theProduct;
     }
   }
 };
