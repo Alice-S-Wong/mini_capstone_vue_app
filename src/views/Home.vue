@@ -12,7 +12,11 @@
     <datalist id="names">
       <option v-for="product in products">{{ product.name }}</option>
     </datalist>
-    <div v-for="product in filterBy(products, searchTerm, 'name')">
+    <button v-on:click="setSortAttribute('name')">Order by name</button>
+    <button v-on:click="setSortAttribute('price')">Order by price</button>
+    <!-- <div v-for="product in filterBy(products, searchTerm, 'name')" v-bind:class="{selected: product.selected}"> -->
+    <div v-for="product in orderBy(products, sortAttribute)" v-bind:class="{selected: product.selected}">
+      <button v-on:click="selectProduct(product)">Select Product</button>
       <p>{{ product.name }}</p>
       <p>Price: ${{ product.price }}</p>
       <img v-bind:src="product.image_url" width="300px" v-bind:alt="product.name">
@@ -34,6 +38,11 @@
 </template>
 
 <style>
+.selected {
+  color: white;
+  background-color: steelBlue;
+  transition: background-color 1s ease;
+}
 </style>
 
 <script>
@@ -51,7 +60,8 @@ export default {
       newProductPrice: "",
       newProductImageUrl: "",
       currentProduct: {},
-      searchTerm: ""
+      searchTerm: "",
+      sortAttribute: "name"
     };
   },
   created: function() {
@@ -111,6 +121,14 @@ export default {
         console.log(index);
         this.products.splice(index, 1);
       });
+    },
+    selectProduct: function(theProduct) {
+      // console.log('selecting product');
+      theProduct.selected = !theProduct.selected;
+      // console.log(theProduct);
+    },
+    setSortAttribute: function(theAttribute) {
+      this.sortAttribute = theAttribute;
     }
   }
 };
